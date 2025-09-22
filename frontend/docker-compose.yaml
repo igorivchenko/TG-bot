@@ -1,0 +1,14 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        NGROK_TOKEN: ${NGROK_TOKEN}
+    ports:
+      - '5173:5173'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NGROK_TOKEN=${NGROK_TOKEN}
+    command: sh -c "npm run dev -- --host 0.0.0.0 & ngrok http 5173 --log=stdout"

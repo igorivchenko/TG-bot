@@ -11,7 +11,7 @@ export default defineConfig({
       usePolling: true,
     },
     hmr: {
-      host: 'e09e9c0c2228.ngrok-free.app',
+      host: '9a0541dedf16.ngrok-free.app',
       protocol: 'wss',
       clientPort: 443,
     },

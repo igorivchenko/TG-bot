@@ -66,12 +66,12 @@ app.post('/web-data', async (req, res) => {
     await bot.sendMessage(
       id,
       `
-✅ <b>Завдання:</b> "${name}"  
-📅 <b>Дата:</b> ${formatDate(date)}  
-👤 <b>Відповідальний:</b> ${responsible}  
-👥 <b>Команда:</b> ${team}  
+✅ &nbsp;<b>Завдання:</b> "${name}"  
+📅 &nbsp;<b>Дата:</b> ${formatDate(date)}  
+👤 &nbsp;<b>Відповідальний:</b> ${responsible}  
+👥 &nbsp;<b>Команда:</b> ${team}  
 
-📝 <b>Опис:</b>  
+📝 &nbsp;<b>Опис:</b>  
 <pre>${description}</pre>
 `,
       { parse_mode: 'HTML' }

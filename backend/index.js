@@ -59,10 +59,12 @@ app.post('/web-data', async (req, res) => {
       type: 'article',
       id: queryId,
       title: 'Завдання успішно створено',
-      message_text: `Вітаю ${name} з успішно створеним завданням.
+      message_text: `
+      Завдання "${name}" успішно створене!.
       Дата створення: ${date}. 
-      Відповідальний за завдання ${responsible} із команди${team}.
-      Детальний опис завдання: ${description}`,
+      Відповідальний за завдання ${responsible} із команди ${team}.
+      Детальний опис завдання:
+      ${description}`,
     });
     return res.status(200).json({});
   } catch (error) {

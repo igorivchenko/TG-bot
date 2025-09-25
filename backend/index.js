@@ -54,6 +54,14 @@ bot.on('message', async msg => {
 app.post('/web-data', async (req, res) => {
   const { queryId, name, responsible, team, description, date } = req.body;
 
+  function formatDate(isoString) {
+    const date = new Date(isoString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // додаємо 0 спереду
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${day}.${month}.${year}`;
+  }
+
   try {
     await bot.answerWebAppQuery(queryId, {
       type: 'article',
@@ -61,13 +69,13 @@ app.post('/web-data', async (req, res) => {
       title: 'Завдання успішно створено',
       input_message_content: {
         message_text: `
-<b>Завдання:</b> "${name}" успішно створене!  
-<b>Дата створення:</b> ${date}  
-<b>Відповідальний:</b> ${responsible} із команди <i>${team}</i>  
-<b>Опис:</b>  
+*Завдання:* "${name}" успішно створене!  
+*Дата створення:* ${formatDate(date)}  
+*Відповідальний:* ${responsible} із команди _${team}_  
+*Опис:*  
 ${description}
 `,
-        parse_mode: 'HTML',
+        parse_mode: 'Markdown',
       },
     });
     return res.status(200).json({});

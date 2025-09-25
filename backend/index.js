@@ -52,28 +52,23 @@ bot.on('message', async msg => {
 });
 
 app.post('/web-data', async (req, res) => {
-  const data = req.body;
-  console.log('📩 Отримані дані з фронта:', data);
-
-  // {
-  //   queryId, name, responsible, team, description, date;
-  // }
+  const { queryId, name, responsible, team, description, date } = req.body;
 
   try {
-    await bot.answerWebAppQuery(data.queryId, {
+    await bot.answerWebAppQuery(queryId, {
       type: 'article',
-      id: data.queryId,
+      id: queryId,
       title: 'Завдання успішно створено',
-      message_text: `Вітаю ${data.name} з успішно створеним завданням.
+      message_text: `Вітаю ${name} з успішно створеним завданням.
       Дата створення: ${date}. 
       Відповідальний за завдання ${responsible} із команди${team}.
       Детальний опис завдання: ${description}`,
     });
     return res.status(200).json({});
   } catch (error) {
-    await bot.answerWebAppQuery(data.queryId, {
+    await bot.answerWebAppQuery(queryId, {
       type: 'article',
-      id: data.queryId,
+      id: queryId,
       title: 'Нажаль, не вдалося створити завдання',
       input_message_content: {
         message_text: 'Нажаль, не вдалося створити завдання',

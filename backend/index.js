@@ -60,9 +60,9 @@ app.post('/web-data', async (req, res) => {
   // }
 
   try {
-    await bot.answerWebAppQuery(queryId, {
+    await bot.answerWebAppQuery(data.queryId, {
       type: 'article',
-      id: queryId,
+      id: data.queryId,
       title: 'Завдання успішно створено',
       message_text: `Вітаю ${data.name} з успішно створеним завданням.
       Дата створення: ${date}. 
@@ -71,9 +71,9 @@ app.post('/web-data', async (req, res) => {
     });
     return res.status(200).json({});
   } catch (error) {
-    await bot.answerWebAppQuery(queryId, {
+    await bot.answerWebAppQuery(data.queryId, {
       type: 'article',
-      id: queryId,
+      id: data.queryId,
       title: 'Нажаль, не вдалося створити завдання',
       input_message_content: {
         message_text: 'Нажаль, не вдалося створити завдання',

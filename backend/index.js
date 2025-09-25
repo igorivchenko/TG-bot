@@ -52,7 +52,7 @@ bot.on('message', async msg => {
 });
 
 app.post('/web-data', async (req, res) => {
-  const { queryId, name, responsible, team, description, date } = req.body;
+  const { queryId, id, name, responsible, team, description, date } = req.body;
 
   function formatDate(isoString) {
     const date = new Date(isoString);
@@ -63,21 +63,19 @@ app.post('/web-data', async (req, res) => {
   }
 
   try {
-    await bot.answerWebAppQuery(queryId, {
-      type: 'article',
-      id: queryId,
-      title: 'Завдання успішно створено',
-      input_message_content: {
-        message_text: `
-*Завдання:* "${name}" успішно створене!  
-*Дата створення:* ${formatDate(date)}  
-*Відповідальний:* ${responsible} із команди _${team}_  
-*Опис:*  
-${description}
+    await bot.sendMessage(
+      id,
+      `
+✅ <b>Завдання:</b> "${name}"  
+📅 <b>Дата:</b> ${formatDate(date)}  
+👤 <b>Відповідальний:</b> ${responsible}  
+👥 <b>Команда:</b> ${team}  
+
+📝 <b>Опис:</b>  
+<pre>${description}</pre>
 `,
-        parse_mode: 'Markdown',
-      },
-    });
+      { parse_mode: 'HTML' }
+    );
     return res.status(200).json({});
   } catch (error) {
     await bot.answerWebAppQuery(queryId, {

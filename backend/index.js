@@ -53,6 +53,7 @@ bot.on('message', async msg => {
 
 app.post('/web-data', async (req, res) => {
   const { queryId, id, name, responsible, team, description, date } = req.body;
+  const NBSP = '\u00A0';
 
   function formatDate(isoString) {
     const date = new Date(isoString);
@@ -66,10 +67,10 @@ app.post('/web-data', async (req, res) => {
     await bot.sendMessage(
       id,
       `
-✅ &nbsp;<b>Завдання:</b> "${name}"  
-📅 &nbsp;<b>Дата:</b> ${formatDate(date)}  
-👤 &nbsp;<b>Відповідальний:</b> ${responsible}  
-👥 &nbsp;<b>Команда:</b> ${team}  
+✅${NBSP};<b>Завдання:</b> "${name}"  
+📅${NBSP};<b>Дата:</b> ${formatDate(date)}  
+👤${NBSP};<b>Відповідальний:</b> ${responsible}  
+👥${NBSP};<b>Команда:</b> ${team}  
 
 📝 &nbsp;<b>Опис:</b>  
 <pre>${description}</pre>

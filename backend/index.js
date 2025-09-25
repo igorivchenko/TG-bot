@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-bot.on('message', async (msg) => {
+bot.on('message', async msg => {
   const chatId = msg.chat.id;
   const text = msg.text;
 
@@ -52,25 +52,31 @@ bot.on('message', async (msg) => {
 });
 
 app.post('/web-data', async (req, res) => {
-  const { queryId, products, totalPrice } = req.body;
+  const data = req.body;
+  console.log('📩 Отримані дані з фронта:', data);
 
-  const productsText = products.map((p) => `${p.title}: ${p.price}`).join('\n');
+  // {
+  //   queryId, name, responsible, team, description, date;
+  // }
 
   try {
     await bot.answerWebAppQuery(queryId, {
       type: 'article',
       id: queryId,
-      title: 'Успішна покупка',
-      message_text: `Вітаю з покупкою на суму ${totalPrice}!\nКуплені товари:\n${productsText}`,
+      title: 'Завдання успішно створено',
+      message_text: `Вітаю ${data.name} з успішно створеним завданням.
+      Дата створення: ${date}. 
+      Відповідальний за завдання ${responsible} із команди${team}.
+      Детальний опис завдання: ${description}`,
     });
     return res.status(200).json({});
   } catch (error) {
     await bot.answerWebAppQuery(queryId, {
       type: 'article',
       id: queryId,
-      title: 'Нажаль, не вдалося купити товар',
+      title: 'Нажаль, не вдалося створити завдання',
       input_message_content: {
-        message_text: 'Нажаль, не вдалося купити товар',
+        message_text: 'Нажаль, не вдалося створити завдання',
       },
     });
     return res.status(500).json({});

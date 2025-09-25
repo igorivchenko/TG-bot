@@ -2,6 +2,7 @@ import TelegramBot from 'node-telegram-bot-api';
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
+import { formatDate } from './utils/formatDate';
 
 const token = process.env.BOT_TOKEN;
 const webAppUrl = 'https://a4dd27c87936.ngrok-free.app';
@@ -51,16 +52,8 @@ bot.on('message', async msg => {
   }
 });
 
-app.post('/web-data', async (req, res) => {
+app.post('/tasks', async (req, res) => {
   const { queryId, id, name, responsible, team, description, date } = req.body;
-
-  function formatDate(isoString) {
-    const date = new Date(isoString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // додаємо 0 спереду
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${day}.${month}.${year}`;
-  }
 
   try {
     await bot.sendMessage(
@@ -78,12 +71,43 @@ ${description}
     );
     return res.status(200).json({});
   } catch (error) {
-    await bot.answerWebAppQuery(queryId, {
+    await bot.sendMessage(id, {
       type: 'article',
       id: queryId,
       title: 'Нажаль, не вдалося створити завдання',
       input_message_content: {
         message_text: 'Нажаль, не вдалося створити завдання',
+      },
+    });
+    return res.status(500).json({});
+  }
+});
+
+app.post('/meetings', async (req, res) => {
+  const { id, name, responsible, team, description, date } = req.body;
+
+  try {
+    await bot.sendMessage(
+      id,
+      `
+✅\u2003\u2003<b>Зустріч:</b> "${name}"  
+📅\u2003\u2003<b>Дата:</b> ${formatDate(date)}  
+👤\u2003\u2003<b>Відповідальний:</b> ${responsible}  
+👥\u2003\u2003<b>Команда:</b> ${team}  
+
+📝 <b>Опис:</b>  
+${description}
+`,
+      { parse_mode: 'HTML' }
+    );
+    return res.status(200).json({});
+  } catch (error) {
+    await bot.sendMessage(id, {
+      type: 'article',
+      id: queryId,
+      title: 'Нажаль, не вдалося назначити зустріч',
+      input_message_content: {
+        message_text: 'Нажаль, не вдалося назначити зустріч',
       },
     });
     return res.status(500).json({});

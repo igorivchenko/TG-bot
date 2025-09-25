@@ -2,7 +2,7 @@ import TelegramBot from 'node-telegram-bot-api';
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
-import { formatDate } from './utils/formatDate';
+import { formatDate } from './utils/formatDate.js';
 
 const token = process.env.BOT_TOKEN;
 const webAppUrl = 'https://a4dd27c87936.ngrok-free.app';
